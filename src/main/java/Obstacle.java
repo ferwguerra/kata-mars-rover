@@ -1,4 +1,12 @@
 public class Obstacle {
-    public Obstacle(int i, int i) {
+    private Position position;
+
+    public Obstacle(int x, int y) {
+        Position position = new Position(x, y);
+        this.position = position;
+    }
+
+    public Position getPosition() {
+        return position;
     }
 }
