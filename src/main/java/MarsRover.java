@@ -13,23 +13,7 @@ public class MarsRover {
     public String execute(String command) {
         StringBuffer finalPosition = new StringBuffer();
 
-        processCommands:
-        for (char instruction : command.toCharArray()) {
-            switch (instruction) {
-                case 'L':
-                    turnLeft();
-                    break;
-                case 'R':
-                    turnRight();
-                    break;
-                case 'M':
-                    tryToMove();
-                    if (obstacleFound) {
-                        break processCommands;
-                    }
-                    break;
-            }
-        }
+        processCommands(command);
 
         if (obstacleFound) {
             finalPosition.append(OBSTACLE_INDICATOR);
@@ -41,6 +25,25 @@ public class MarsRover {
                 .append(position.getY())
                 .append(":")
                 .append(facing.name()).toString();
+    }
+
+    private void processCommands(String command) {
+        for (char instruction : command.toCharArray()) {
+            switch (instruction) {
+                case 'L':
+                    turnLeft();
+                    break;
+                case 'R':
+                    turnRight();
+                    break;
+                case 'M':
+                    tryToMove();
+                    if (obstacleFound) {
+                        return;
+                    }
+                    break;
+            }
+        }
     }
 
     private void tryToMove() {
@@ -68,10 +71,10 @@ public class MarsRover {
                 potentialPosition.decreaseY();
                 break;
         }
-        return checkPositionLimit(potentialPosition);
+        return getPositionLimitedByGridSize(potentialPosition);
     }
 
-    private Position checkPositionLimit(Position position) {
+    private Position getPositionLimitedByGridSize(Position position) {
         if (position.getY() > grid.getUpperLimit()) {
             position.setY(grid.getLowerLimit());
         }

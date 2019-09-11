@@ -5,7 +5,7 @@ public class Grid {
 
     private final int upperLimit;
     private final int lowerLimit = 0;
-    private List<Obstacle> obstacles = new ArrayList<Obstacle>();
+    private List<Obstacle> obstacles = new ArrayList<>();
 
     public Grid(int size) {
         upperLimit = size - 1;
