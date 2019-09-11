@@ -1,13 +1,20 @@
+import states.FacingState;
+import states.NorthFacingState;
+
 public class MarsRover {
 
     public static final String OBSTACLE_INDICATOR = "O:";
+
+    private boolean obstacleFound;
     private final Grid grid;
-    private Cardinal facing = Cardinal.N;
-    private Position position = new Position(0, 0);
-    private boolean obstacleFound = false;
+    private FacingState facing;
+    private Position position;
 
     public MarsRover(Grid grid) {
         this.grid = grid;
+        this.facing = new NorthFacingState();
+        this.position = new Position(0, 0);
+        this.obstacleFound = false;
     }
 
     public String execute(String command) {
@@ -24,7 +31,7 @@ public class MarsRover {
                 .append(":")
                 .append(position.getY())
                 .append(":")
-                .append(facing.name()).toString();
+                .append(facing.getName()).toString();
     }
 
     private void processCommands(String command) {
@@ -57,17 +64,17 @@ public class MarsRover {
 
     private Position calculatePotentialPosition() {
         Position potentialPosition = new Position(this.position.getX(), this.position.getY());
-        switch (facing) {
-            case N:
+        switch (facing.getName()) {
+            case "N":
                 potentialPosition.increaseY();
                 break;
-            case E:
+            case "E":
                 potentialPosition.increaseX();
                 break;
-            case W:
+            case "W":
                 potentialPosition.decreaseX();
                 break;
-            case S:
+            case "S":
                 potentialPosition.decreaseY();
                 break;
         }
