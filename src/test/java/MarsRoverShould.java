@@ -1,3 +1,5 @@
+import command.MarsRoverInstructionExecutor;
+import domain.Obstacle;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Before;
@@ -10,13 +12,11 @@ import static org.junit.Assert.assertThat;
 @RunWith(JUnitParamsRunner.class)
 public class MarsRoverShould {
 
-    MarsRover marsRover;
-    Grid grid;
+    MarsRoverInstructionExecutor marsRoverInstructionExecutor;
 
     @Before
-    public void setUp() throws Exception {
-        grid = new Grid(10);
-        marsRover = new MarsRover(grid);
+    public void setUp() {
+        marsRoverInstructionExecutor = new MarsRoverInstructionExecutor();
     }
 
     @Test
@@ -27,7 +27,7 @@ public class MarsRoverShould {
             "LLLL, 0:0:N"
     })
     public void turn_left(String command, String result) {
-        assertThat(marsRover.execute(command), is(result));
+        assertThat(marsRoverInstructionExecutor.execute(command), is(result));
     }
 
     @Test
@@ -38,7 +38,7 @@ public class MarsRoverShould {
             "RRRR, 0:0:N"
     })
     public void turn_right(String command, String result) {
-        assertThat(marsRover.execute(command), is(result));
+        assertThat(marsRoverInstructionExecutor.execute(command), is(result));
     }
 
     @Test
@@ -78,7 +78,7 @@ public class MarsRoverShould {
             "LLMMMM, 0:6:S"
     })
     public void move(String command, String result) {
-        assertThat(marsRover.execute(command), is(result));
+        assertThat(marsRoverInstructionExecutor.execute(command), is(result));
     }
 
     @Test
@@ -92,11 +92,9 @@ public class MarsRoverShould {
     })
     public void move_with_obstacles(String command, int positionXObstacle, int positionYObstacle, String result) {
         Obstacle obstacle = new Obstacle(positionXObstacle, positionYObstacle);
-        Grid grid = new Grid(10);
-        grid.addObstacle(obstacle);
-        MarsRover marsRover = new MarsRover(grid);
 
-        assertThat(marsRover.execute(command), is(result));
+        marsRoverInstructionExecutor.addObstacleToGrid(obstacle);
+        assertThat(marsRoverInstructionExecutor.execute(command), is(result));
     }
 
 

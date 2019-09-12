@@ -1,3 +1,5 @@
+package domain;
+
 public class MarsRover {
 
     public static final String OBSTACLE_INDICATOR = "O:";
@@ -5,45 +7,42 @@ public class MarsRover {
     private Cardinal facing = Cardinal.N;
     private Position position = new Position(0, 0);
     private boolean obstacleFound = false;
+    private StringBuffer finalPosition;
 
     public MarsRover(Grid grid) {
         this.grid = grid;
     }
 
-    public String execute(String command) {
-        StringBuffer finalPosition = new StringBuffer();
+    public String turnRight() {
+        finalPosition = new StringBuffer();
+        facing = facing.right();
+        return getFinalPosition();
+    }
 
-        processCommands(command);
+    public String turnLeft() {
+        finalPosition = new StringBuffer();
+        facing = facing.left();
+        return getFinalPosition();
+    }
 
+    public String move() {
+        finalPosition = new StringBuffer();
+
+        tryToMove();
         if (obstacleFound) {
             finalPosition.append(OBSTACLE_INDICATOR);
         }
 
+        return getFinalPosition();
+    }
+
+    private String getFinalPosition() {
         return finalPosition
                 .append(position.getX())
                 .append(":")
                 .append(position.getY())
                 .append(":")
                 .append(facing.name()).toString();
-    }
-
-    private void processCommands(String command) {
-        for (char instruction : command.toCharArray()) {
-            switch (instruction) {
-                case 'L':
-                    turnLeft();
-                    break;
-                case 'R':
-                    turnRight();
-                    break;
-                case 'M':
-                    tryToMove();
-                    if (obstacleFound) {
-                        return;
-                    }
-                    break;
-            }
-        }
     }
 
     private void tryToMove() {
@@ -92,14 +91,6 @@ public class MarsRover {
         }
 
         return position;
-    }
-
-    private void turnRight() {
-        facing = facing.right();
-    }
-
-    private void turnLeft() {
-        facing = facing.left();
     }
 
 

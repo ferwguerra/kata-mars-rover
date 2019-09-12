@@ -1,3 +1,5 @@
+package domain;
+
 public enum Cardinal {
     N("W", "E"),
     W("S", "N"),
